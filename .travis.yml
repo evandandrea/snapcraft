@@ -12,6 +12,12 @@ cache:
   directories:
     - $TRAVIS_BUILD_DIR/snaps-cache
 
+deploy:
+  provider: snap
+  snap: "*.snap"
+  channel: "edge/$TRAVIS_PULL_REQUEST"
+  skip_cleanup: true
+
 jobs:
   include:
     # Tests, only when not triggered by the daily cron.
