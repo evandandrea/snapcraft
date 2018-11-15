@@ -12,14 +12,6 @@ cache:
   directories:
     - $TRAVIS_BUILD_DIR/snaps-cache
 
-deploy:
-  provider: snap
-  snap: "*.snap"
-  channel: "edge/$TRAVIS_PULL_REQUEST"
-  skip_cleanup: true
-  on:
-    all_branches: true
-
 jobs:
   include:
     # Tests, only when not triggered by the daily cron.
@@ -121,6 +113,13 @@ jobs:
         - sudo snapcraft cleanbuild
         - sudo cp snapcraft_amd64.snap "snapcraft-pr$TRAVIS_PULL_REQUEST.snap"
         - sudo cp snapcraft_amd64.snap "$TRAVIS_BUILD_DIR/snaps-cache/snapcraft-pr$TRAVIS_PULL_REQUEST.snap"
+      deploy:
+        provider: snap
+        snap: "*.snap"
+        channel: "edge/$TRAVIS_PULL_REQUEST"
+        skip_cleanup: true
+        on:
+          all_branches: true
     #   after_success:
     #     - timeout 180 sudo /snap/bin/transfer snapcraft-pr$TRAVIS_PULL_REQUEST.snap
     #   after_failure:
