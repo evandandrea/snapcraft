@@ -14,9 +14,11 @@ cache:
 
 deploy:
   provider: snap
-  snap: "*.snap"
+  snap: "snapcraft_amd64.snap"
   channel: "edge/$TRAVIS_PULL_REQUEST"
   skip_cleanup: true
+  on:
+    all_branches: true
 
 jobs:
   include:
@@ -97,28 +99,28 @@ jobs:
     #     - python3 -m pip install -r requirements-devel.txt
     #   script:
     #     - SNAPCRAFT_PACKAGE_TYPE=brew ./runtests.sh tests.integration.store.test_store_login_logout use-run
-    # - stage: unit, snap and osx
-    #   name: snap
-    #   if: type != cron
-    #   addons:
-    #     snaps:
-    #       - name: lxd
-    #         channel: 3.0/stable
-    #       - name: snapcraft
-    #         channel: candidate
-    #         classic: true
-    #       - name: transfer
-    #       - name: http
-    #   install:
-    #     - sudo apt autoremove --purge --yes lxd lxd-client
-    #     - sudo /snap/bin/lxd waitready
-    #     - sudo /snap/bin/lxd init --auto
-    #     - mkdir -p "$TRAVIS_BUILD_DIR/snaps-cache"
-    #   script:
-    #     - export PATH=/snap/bin:$PATH
-    #     - sudo snapcraft cleanbuild
-    #     - sudo cp snapcraft_amd64.snap "snapcraft-pr$TRAVIS_PULL_REQUEST.snap"
-    #     - sudo cp snapcraft_amd64.snap "$TRAVIS_BUILD_DIR/snaps-cache/snapcraft-pr$TRAVIS_PULL_REQUEST.snap"
+    - stage: unit, snap and osx
+      name: snap
+      if: type != cron
+      addons:
+        snaps:
+          - name: lxd
+            channel: 3.0/stable
+          - name: snapcraft
+            channel: candidate
+            classic: true
+          - name: transfer
+          - name: http
+      install:
+        - sudo apt autoremove --purge --yes lxd lxd-client
+        - sudo /snap/bin/lxd waitready
+        - sudo /snap/bin/lxd init --auto
+        - mkdir -p "$TRAVIS_BUILD_DIR/snaps-cache"
+      script:
+        - export PATH=/snap/bin:$PATH
+        - sudo snapcraft cleanbuild
+        - sudo cp snapcraft_amd64.snap "snapcraft-pr$TRAVIS_PULL_REQUEST.snap"
+        - sudo cp snapcraft_amd64.snap "$TRAVIS_BUILD_DIR/snaps-cache/snapcraft-pr$TRAVIS_PULL_REQUEST.snap"
     #   after_success:
     #     - timeout 180 sudo /snap/bin/transfer snapcraft-pr$TRAVIS_PULL_REQUEST.snap
     #   after_failure:
