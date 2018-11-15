@@ -1,4 +1,4 @@
-name: snapcraft
+name: evsnap
 summary: easily create snaps
 description: |
     Snapcraft aims to make upstream developers' lives easier and as such is not
