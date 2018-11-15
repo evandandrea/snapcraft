@@ -10,7 +10,7 @@ confinement: classic
 
 apps:
   snapcraft:
-    command: bin/snapcraft
+    command: bin/snapcraft -h
     completer: snapcraft-completion
 
 build-packages:
